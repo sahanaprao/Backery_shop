@@ -1,0 +1,20 @@
+body {
+     background-color: var(--bg-color);
+     color: var(--font-color);
+}
+
+h1,h2,h3,h4,h5,h6,p {
+    color: var(--secondary-color);
+}
+
+:root {
+    --secondary-color: #536390;
+    --font-color: #424242;
+    --bg-color: #fff;
+}
+
+[data-theme="dark"] {
+    --secondary-color: #42b983;
+    --font-color: #e1e1ff;
+    --bg-color: #2c3e50;
+}
