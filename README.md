@@ -1,24 +1,34 @@
-# backery_shop
+# Cookie Bakery
 
-## Project setup
-```
+Cookie Bakery is a shop where customers can get cookies. customers can give orders, see cookies through windows and try to post in the mailbox. 
+
+## Installation
+
+Use the package manager [npm](https://www.npmjs.com/) to install dependencies.
+
+```bash
 npm install
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
+## Tech stacks
+```bash
+HTML, CSS, VUE.JS, NODEJS, SQLITE3
 ```
 
-### Lints and fixes files
-```
-npm run lint
+## Run Server 
+
+```bash
+node server.js
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Run Client
+
+```bash
+npm run server
+```
+
+## Usage
+
+```bash
+Open http://localhost:8080/ in browser to visit Cookie Bakery
+```
