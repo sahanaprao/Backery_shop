@@ -3,27 +3,27 @@
     <div class="col-xs-6 col-md-4"></div>
     <div class="col-xs-6 col-md-4">
         <div class="star" v-bind:class="{'moon': isDarkTheme, 'sun': !isDarkTheme}" @click="themeChange(isDarkTheme = !isDarkTheme)"></div>
-        <!-- <div class="backery"> -->
-            <div class="roof"></div>
-            <div class="backery-name">
-                <p style="margin-top: 0.5rem;">COOKIE BACKERY</p>
-            </div>
-            <div class="wall">
-                <div class="window left" v-show="!isCookie.left" @mouseover="transformCookie(true,'left')"></div>
-                <img src="images/cookie.jfif" alt="cookie" class="window left" v-show="isCookie.left" @mouseout="transformCookie(false,'left')"/>
+        <div class="roof"></div>
+       
+        <div class="wall">
+             <div class="backery-name">
+            <p style="margin-top: 0.5rem;">COOKIE BACKERY</p>
+        </div>
+            <div class="window left" v-show="!isCookie.left" @mouseover="transformCookie(true,'left')"></div>
+            <img src="images/cookie.jfif" alt="cookie" class="window left" v-show="isCookie.left" @mouseout="transformCookie(false,'left')"/>
 
-                <div class="window right" v-show="!isCookie.right" @mouseover="transformCookie(true,'right')" ></div>
-                <img src="images/cookie.jfif" alt="cookie" class="window right" v-show="isCookie.right" @mouseout="transformCookie(false,'right')"/>
+            <div class="window right" v-show="!isCookie.right" @mouseover="transformCookie(true,'right')" ></div>
+            <img src="images/cookie.jfif" alt="cookie" class="window right" v-show="isCookie.right" @mouseout="transformCookie(false,'right')"/>
 
-                <div class="door" @click="makeOrder()">
-                    <div class="locker"></div>
-                </div>
-                <div class="mail-box" v-bind:class="{'fall':fall}" @click="mailBox()">
-                    <div class="opener"></div>
-                    <p>Mailbox</p>
-                </div>
+            <div class="door" @click="makeOrder()">
+                <div class="locker"></div>
             </div>
-        <!-- </div> -->
+            <div class="mail-box" v-bind:class="{'fall':fall}" @click="mailBox()">
+                <div class="opener"></div>
+                <p>Mailbox</p>
+            </div>
+        </div>
+        <p v-if="orderMsg">{{orderMsg}}</p>
     </div>
     <div class="col-xs-6 col-md-4"></div>
 
@@ -36,11 +36,12 @@ export default {
     name: 'building',
     data:  function() {
 		return {
-        isDarkTheme: false,
-        fall: false,
-        isCookie: {
-            left : false,
-            right : false
+            isDarkTheme: false,
+            fall: false,
+            orderMsg:'',
+            isCookie: {
+                left : false,
+                right : false
             }
         }
     },
@@ -49,14 +50,27 @@ export default {
             document.documentElement.setAttribute('data-theme', isDarkTheme?'dark':'light');
         },
         transformCookie: function (isCookie,side) {
-            if(document.documentElement.getAttribute('data-theme') !== 'dark')
+            if(document.documentElement.getAttribute('data-theme') !== 'dark') {
                 this.isCookie[side] = isCookie;
+            }
         },
         makeOrder: function () {
-
+            if(document.documentElement.getAttribute('data-theme') !== 'dark') {
+                this.axios.post('http://localhost:4000/api/orders', {
+                    timestamp: new Date()
+                })
+                .then((response) => {
+                    this.orderMsg = response.data;
+                })
+                .catch((error) => {
+                    this.orderMsg = error.message;
+                });
+            }
         },
         mailBox: function () {
-            this.fall = !this.fall;
+            // if(document.documentElement.getAttribute('data-theme') !== 'dark') {
+                this.fall = !this.fall;
+            // }
         }
     }
 }
@@ -125,6 +139,7 @@ export default {
     left: 0;
     right: 0;
     margin: auto;
+    cursor: pointer;
 }
 
 .locker {
@@ -165,15 +180,14 @@ p {
 }
 
 .backery-name {
-   width: 41%;
+    width: 41%;
     height: 7vh;
     background-color: rgb(149, 199, 130);
     z-index: 5;
     position: absolute;
     left: 0;
     right: 0;
-    top: 0;
-    bottom: 0;
+    top: -23px;
     margin: auto;
     text-align: center;
     border: 4px solid rgb(106, 163, 82);
@@ -187,4 +201,5 @@ p {
    0% {-webkit-transform: rotateX(0deg);}
    100%{-webkit-transform:rotateX(360deg);}
 }
+
 </style>
